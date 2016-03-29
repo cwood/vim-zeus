@@ -1,0 +1,134 @@
+*ztscomplete.txt*	Plugin for Zeus TrafficScript auto completion
+*ztscomplete*
+
+ZeusZTSComplete version 1.0
+
+For Vim version 7.0 and above
+
+==============================================================================
+
+1. Overview                                     |ztscomplete-overview|
+2. Downloads                                    |ztscomplete-download|
+3. Installation                                 |ztscomplete-installation|
+4. Features                                     |ztscomplete-features|
+5. Colours                                      |ztscomplete-colours|
+
+==============================================================================
+1. Overview~
+                                                *ztscomplete-overview*
+The purpose of this script is to auto-complete TrafficScript functions by providing 
+and 'omnifunc' for TrafficScript.
+
+In a TrafficScirpt file( a file with .zts suffix or a file in $ZEUSHOME/zxtm/conf/rules/ directory ), you can use CTRL-X CTRL-O or TAB to complete function names in 'Insert' mode. The completion gives a description of the function being completed, its parameters and sample code.
+
+You can set a "may complete" behaviour to start a completion automatically
+after a '.'.
+
+==============================================================================
+2. Downloads~
+                                                *ztscomplete-download*
+You can download the latest release of the script from the Zeus Community :
+
+==============================================================================
+3. Installation~
+                                                *ztscomplete-installation*
+3.1. Script installation~
+
+Unzip the downloaded file in your personal |vimfiles| directory (~/.vim under 
+unix ). The 'omnifunc' will be automatically set for files ending with '.zts'.
+
+Make sure your .vimrc file contains these lines for the plugin to work correctly.
+
+        set nocp
+        filetype plugin on
+        set completeopt=menuone,menu,longest,preview
+
+For VIM to be able to recognize that a file is of 'TrafficScript' type, create a file called 'filetype.vim' in '~/.vim/after' ( if it doesn't exist ) and add these lines to it.
+
+        augroup filetypedetect
+	   au BufNewFile,BufRead *.zts,*/conf/rules/*  set filetype=zts syn=zts
+	augroup END
+
+You can also acheive this by adding the above lines to your '.vimrc' file, but this approach is less optimized.
+
+
+For syntax highlighting and auto indentation, add these lines to the '.vimrc' file as well.
+	syntax on
+	set shiftwidth=3
+	set smartindent
+        
+
+To verify that things are working, just open a file with '.zts' suffix and run ':helptags ~/.vim/doc, and then try to auto-complete some TrafficScript functions. Use ':help ztscomplete' to view this help text.
+
+3.1.1. Files~
+
+After installation you should find these files ( along with any existing files
+) :
+
+    after\ftplugin\zts.vim
+
+    autoload\zeus\zts\complete.vim
+                     \functions.vim
+                     \popup.vim
+                     \maycomplete.vim
+                     \compile.vim
+                     \settings.vim
+                     \utils.vim
+
+    doc\zeuscomplete.txt
+
+==============================================================================
+4. Features~
+
+                                                *ztscomplete-features*
+
+This section outlines the various key-maps to use to trigger features.
+
+4.1 Compilation:  To compile the rule, press F5 at any time. The environment
+    variable ZEUSHOME should be set and point to a valid Zeus Traffic Manager
+    installation on the system. The rule cannot be compiled if the installation
+    is on a remote machine.
+
+4.2 Completion: You can use TAB or <Ctrl-X><Ctrl-O> to try and complete
+    the current word. A list of all possible functions starting with the current
+    word will be displayed in the pop-up menu. Use the TAB or the Up/Down keys to
+    select these functions and <Enter> to finish completion. The use of '.' key 
+    after a full function name will give the list of all possible functions of the 
+    next level.
+
+4.3 Preview window: When a function from the completion pop-up menu is selected, 
+    a preview window is opened to show details of the function that's selected.
+    The preview window remains opened after you have selected and inserted the
+    functions for ease of lookup while entering arguments. The preview window
+    will be automatically closed when ')' is used. You can disable this behaviour
+    by setting this option in your .vimrc file
+
+           let g:ZeusZTS_AutoClosePreview = 0
+
+    in which case the preview window can be closed by doing Ctrl-P in Insert
+    mode. 
+    
+    You can shuffle back and forth from the preview window by using Ctrl-W
+    Ctrl-W in 'Normal' mode( Press 'Esc' or the appropriate key-mapping to go the
+    'Normal' mode from 'Insert' mode.)
+ 
+4.4 Disable Auto-Complete for TrafficScript: You can disable the plugin from
+    showing the list of function names to complete by simply adding this option
+    to your .vimrc file
+    	   
+	   g:ZeusZTS_MayCompleteDot = 0
+    
+    This will stop auto-completion on pressing '.' but still auto-complete for TAB's.
+    
+====================================================================================
+5. Colours~ 
+							*ztscomplete-colours*
+   The default colours for the pop-up menu is pink. You can fiddle around with the menu 
+   colours by using these options in you '.vimrc' file.
+
+	hi Pmenu ctermfg=0 ctermbg=6 guibg=#444444
+	hi PmenuSel ctermfg=7 ctermbg=4 guibg=#555555 guifg=#ffffff
+
+   These options will set the Pmenu color to cyan and PmenuSel color to blue.
+
+====================================================================================
